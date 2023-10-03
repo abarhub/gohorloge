@@ -1,0 +1,17 @@
+[Unit]
+Description=Horloge server daemon
+After=network.target
+
+[Service]
+Type=simple
+#Type=forking
+#EnvironmentFile=/etc/sysconfig/sshd
+ExecStart=/usr/rep/go_build_gohorloge_main_go_linux
+#Restart= always
+User=myuser
+KillMode=mixed
+WorkingDirectory=/usr/rep
+
+
+[Install]
+WantedBy=multi-user.target
