@@ -14,5 +14,5 @@ func arret() error {
 }
 
 func afficheLed(heure []byte, intensite int) {
-	log.Print("affichage led", heure, intensite)
+	log.Print("affichage led: ", convertie(heure), " (", intensite, ")")
 }

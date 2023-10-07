@@ -3,6 +3,7 @@ package affichage
 import (
 	"gohorloge/internal/pkg/bus_message"
 	"log"
+	"strconv"
 )
 
 func affiche() {
@@ -51,6 +52,36 @@ func clock(hour, minute int, showDots bool) []byte {
 		seg[1] |= 0x80
 	}
 	return seg[:]
+}
+
+func convertie(buf []byte) string {
+	res := ""
+	for _, c := range buf {
+		dot := false
+		if c&0x80 != 0 {
+			dot = true
+			c &^= 0x80
+		}
+		trouve := false
+		for i, c2 := range digitToSegment {
+			if c2 == c {
+				trouve = true
+				if i >= 0 && i <= 9 {
+					res += strconv.Itoa(i)
+				} else {
+					res += "?"
+				}
+				break
+			}
+		}
+		if !trouve {
+			res += "?"
+		}
+		if dot {
+			res += "."
+		}
+	}
+	return res
 }
 
 func Init() {
