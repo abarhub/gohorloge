@@ -1,8 +1,10 @@
 package web
 
 import (
+	"embed"
 	"fmt"
 	"gohorloge/internal/pkg/action_simple"
+	"io/fs"
 	"log"
 	"net/http"
 	"strconv"
@@ -55,7 +57,13 @@ func timeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, time.Now().Format("02 Jan 2006 15:04:05 MST"))
 }
 
+//go:embed static
+var staticFiles embed.FS
+
 func InitWeb() error {
+
+	var staticFS = fs.FS(staticFiles)
+	htmlContent, err := fs.Sub(staticFS, "static")
 
 	//fs := http.FileServer(http.Dir("./static"))
 	//http.Handle("/static/", fs)
@@ -63,10 +71,11 @@ func InitWeb() error {
 	http.HandleFunc("/api/action/horloge", actionHandler)
 	http.HandleFunc("/api/action/minuteur", actionHandler)
 	http.HandleFunc("/api/action/arret", actionHandler)
-	http.Handle("/", http.FileServer(http.Dir("./static")))
+	//http.Handle("/", http.FileServer(http.Dir("./static")))
+	http.Handle("/", http.FileServer(http.FS(htmlContent)))
 
 	log.Print("Listening on :3000...")
-	err := http.ListenAndServe(":3000", nil)
+	err = http.ListenAndServe(":3000", nil)
 	if err != nil {
 		return err
 	}
