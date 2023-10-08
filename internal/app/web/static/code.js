@@ -9,11 +9,21 @@ function envoyer() {
     console.log('valeur', checkedValue);
     if (checkedValue) {
         let param = '';
+        let paramName = '';
         if (checkedValue === 'minuteur') {
             const timeControl = document.querySelector('input[type="time"]');
-            param = timeControl.value;
+            if(timeControl) {
+                param = timeControl.value;
+                paramName = 'time';
+            }
+        } else if(checkedValue === 'text'){
+            const textControl = document.querySelector('input[name="text-affiche"]');
+            if(textControl) {
+                param = textControl.value;
+                paramName = 'text';
+            }
         }
-        fetch("/api/action/" + checkedValue + ((param !== '') ? '?time=' + param : ''))
+        fetch("/api/action/" + checkedValue + ((param !== '') ? '?'+paramName+'=' + param : ''))
             .then(response => {
                 console.log('response:', response)
             })

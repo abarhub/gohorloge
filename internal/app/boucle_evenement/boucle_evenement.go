@@ -53,6 +53,11 @@ func boucleEvenement() {
 					difference = diff
 				}
 			}
+		} else if actionSelectionnee.Action == bus_message.AFFICHE_TEXTE {
+			texte := actionSelectionnee.Texte
+			if len(texte) > 0 {
+				bus_message.Messages <- bus_message.Heure{AfficheTexte: true, Texte: texte}
+			}
 		} else if actionSelectionnee.Action == bus_message.AFFICHE_RIEN {
 			if nouveau {
 				bus_message.Messages <- bus_message.Heure{AfficheHeure: false}

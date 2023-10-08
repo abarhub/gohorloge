@@ -46,6 +46,13 @@ func actionHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
+	} else if strings.HasSuffix(r.URL.Path, "text") {
+		if r.URL.Query().Has("text") {
+			texte := r.URL.Query().Get("text")
+			if len(texte) > 0 {
+				action_simple.AffichageTexte(texte)
+			}
+		}
 	} else if strings.HasSuffix(r.URL.Path, "arret") {
 		log.Print("arret")
 		action_simple.Arret()
@@ -71,6 +78,7 @@ func InitWeb() error {
 	http.HandleFunc("/api/action/horloge", actionHandler)
 	http.HandleFunc("/api/action/minuteur", actionHandler)
 	http.HandleFunc("/api/action/arret", actionHandler)
+	http.HandleFunc("/api/action/text", actionHandler)
 	//http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.Handle("/", http.FileServer(http.FS(htmlContent)))
 
