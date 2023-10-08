@@ -12,6 +12,9 @@ func boucleEvenement() {
 	var minutes, secondes int
 	var begin, end time.Time
 	var difference time.Duration
+	var texteCompletAAffiche string
+	var boucleTexte int
+	var affichageTextePrecedant time.Time
 
 	log.Print("démarrage de la boucle d'evenement ...")
 
@@ -54,9 +57,41 @@ func boucleEvenement() {
 				}
 			}
 		} else if actionSelectionnee.Action == bus_message.AFFICHE_TEXTE {
-			texte := actionSelectionnee.Texte
-			if len(texte) > 0 {
-				bus_message.Messages <- bus_message.Heure{AfficheTexte: true, Texte: texte}
+			afficheOk := false
+			if nouveau {
+				texteCompletAAffiche = actionSelectionnee.Texte
+				boucleTexte = 0
+				affichageTextePrecedant = time.Now()
+			}
+			texte := texteCompletAAffiche
+			var texteAAfficher = ""
+			if len(texte) == 0 {
+				texteAAfficher = " "
+				afficheOk = nouveau
+			} else if len(texte) <= 4 {
+				texteAAfficher = texte
+				for len(texteAAfficher) < 4 {
+					texteAAfficher += " "
+				}
+				afficheOk = nouveau
+			} else {
+				now := time.Now()
+				diff := now.Sub(affichageTextePrecedant)
+
+				if nouveau || diff.Milliseconds() > 1000 {
+					afficheOk = true
+					affichageTextePrecedant = now
+					boucleTexte++
+					buf := ""
+					s := texte + " "
+					for i := 0; i < 4; i++ {
+						buf += string(s[(i+boucleTexte)%len(s)])
+					}
+					texteAAfficher = buf
+				}
+			}
+			if len(texte) > 0 && afficheOk {
+				bus_message.Messages <- bus_message.Heure{AfficheTexte: true, Texte: texteAAfficher}
 			}
 		} else if actionSelectionnee.Action == bus_message.AFFICHE_RIEN {
 			if nouveau {

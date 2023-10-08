@@ -71,13 +71,17 @@ func clock(hour, minute int, showDots bool) []byte {
 }
 
 func text(s string) []byte {
+	space := segment[36]
 	res := make([]byte, 4)
+	for i := 0; i < 4; i++ {
+		res[i] = space
+	}
 	for i, c := range s {
 		if i >= 4 {
 			break
 		}
 		if c == 32 { // space
-			res[i] = segment[36]
+			res[i] = space
 		} else if c == 42 { // star/degrees
 			res[i] = segment[38]
 		} else if c == 45 { // dash
@@ -90,7 +94,7 @@ func text(s string) []byte {
 			res[i] = segment[c-48]
 		} else {
 			// on affiche espace
-			res[i] = segment[36]
+			res[i] = space
 		}
 	}
 	return res
