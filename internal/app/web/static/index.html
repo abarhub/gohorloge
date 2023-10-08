@@ -8,12 +8,13 @@
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
-    <h1>Hello, world!</h1>
+    <h1>Horloge</h1>
 
     <div>
 
+      <form name="myForm">
         <fieldset>
-  <legend>Select a maintenance drone:</legend>
+  <legend>Sélection de l'affichage</legend>
 
   <div>
     <input type="radio" id="horloge" name="action" value="horloge" checked />
@@ -32,7 +33,7 @@
     <input type="radio" id="text" name="action" value="text" />
     <label for="text">Text</label>
     <label for="text-affiche">Text à afficher: </label>
-    <input id="text-affiche" type="text" name="text-affiche" value="0123" maxlength="4" />
+    <input id="text-affiche" type="text" name="text-affiche" value="0123" maxlength="20" />
 
   </div>
 
@@ -44,6 +45,7 @@
 
         <button onclick="envoyer()">Envoyer</button>
 
+      </form>
     </div>
 
 

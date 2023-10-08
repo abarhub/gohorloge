@@ -1,5 +1,3 @@
-console.log('test1');
-console.log('test2');
 
 
 function envoyer() {
@@ -27,10 +25,37 @@ function envoyer() {
             .then(response => {
                 console.log('response:', response)
             })
-            //.then(data => {
-                //console.log(data.count)
-                //console.log(data.products)
-            //})
             .catch(error => console.error(error))
     }
 }
+
+function activeChamps(action) {
+    let inputMinuteur = document.getElementById('minuteur-heure');
+    let inputTexteAfficher = document.getElementById('text-affiche');
+    if(action==='minuteur'){
+        inputMinuteur.disabled=false;
+    } else {
+        inputMinuteur.disabled=true;
+    }
+    if(action==='text'){
+        inputTexteAfficher.disabled=false;
+    } else {
+        inputTexteAfficher.disabled=true;
+    }
+}
+
+let rad = document.myForm.action;
+let prev = null;
+for (var i = 0; i < rad.length; i++) {
+    rad[i].addEventListener('change', function() {
+        (prev) ? console.log(prev.value): null;
+        if (this !== prev) {
+            prev = this;
+        }
+        console.log(this.value);
+        let action=this.value;
+        activeChamps(action);
+    });
+}
+
+activeChamps('horloge');
