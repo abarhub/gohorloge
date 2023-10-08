@@ -78,10 +78,12 @@ func boucleEvenement() {
 				now := time.Now()
 				diff := now.Sub(affichageTextePrecedant)
 
-				if nouveau || diff.Milliseconds() > 1000 {
+				if nouveau || diff.Milliseconds() >= 1000 {
 					afficheOk = true
 					affichageTextePrecedant = now
-					boucleTexte++
+					if !nouveau {
+						boucleTexte++
+					}
 					buf := ""
 					s := texte + " "
 					for i := 0; i < 4; i++ {
